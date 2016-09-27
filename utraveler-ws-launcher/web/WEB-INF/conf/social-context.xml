@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.social.connect.web.ProviderSignInController">
+        <constructor-arg index="0" ref="connectionFactoryRegistry"/>
+        <constructor-arg index="1" ref="fbUserRepository"/>
+        <constructor-arg index="2" ref="signInAdapter"/>
+        <property name="applicationUrl" value="http://www.localhost:8080"/>
+        <property name="signUpUrl" value="/signup"/>
+        <property name="signInUrl" value="/signin"/>
+    </bean>
+
+    <bean class="org.springframework.social.connect.web.ConnectController">
+        <constructor-arg index="0" ref="connectionFactoryRegistry"/>
+        <constructor-arg index="1" ref="repository"/>
+    </bean>
+
+    <bean id="connectionFactoryRegistry" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+        <property name="connectionFactories">
+            <list>
+                <ref bean="facebookConnectionFactory"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="facebookConnectionFactory" class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+        <constructor-arg index="0" value="1445350552367748"/>
+        <constructor-arg index="1" value="11b0eb6fb88be6340368047c5e843887"/>
+    </bean>
+
+    <bean id="repository" class="com.utraveler.ws.auth.FacebookConnectionRepository">
+
+    </bean>
+
+    <bean id="fbUserRepository" class="com.utraveler.ws.auth.FacebookUserConnectionRepository">
+        <constructor-arg ref="repository"/>
+    </bean>
+
+    <bean id="signInAdapter" class="com.utraveler.ws.auth.SocialSignInAdapter">
+        <constructor-arg index="0" ref="userService"/>
+        <constructor-arg index="1" ref="tokenServices"/>
+    </bean>
+
+    <bean id="signUp" class="com.utraveler.ws.auth.SocialConnectionSignUp">
+        <constructor-arg ref="userService"/>
+    </bean>
+</beans>

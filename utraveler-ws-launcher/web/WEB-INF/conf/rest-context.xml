@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+    <import resource="classpath*:configuration/dao-context.xml"/>
+    <import resource="classpath*:configuration/validation-context.xml"/>
+
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/properties/web.properties"/>
+    </bean>
+
+    <bean id="abstractLoggingInterceptor" abstract="true">
+        <!--<property name="prettyLogging" value="true"/>-->
+    </bean>
+    <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor" parent="abstractLoggingInterceptor"/>
+    <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor" parent="abstractLoggingInterceptor"/>
+
+    <cxf:bus>
+        <cxf:inInterceptors>
+            <ref bean="loggingInInterceptor"/>
+        </cxf:inInterceptors>
+        <cxf:outInterceptors>
+            <ref bean="loggingOutInterceptor"/>
+        </cxf:outInterceptors>
+        <cxf:outFaultInterceptors>
+            <ref bean="loggingOutInterceptor"/>
+        </cxf:outFaultInterceptors>
+        <cxf:inFaultInterceptors>
+            <ref bean="loggingInInterceptor"/>
+        </cxf:inFaultInterceptors>
+    </cxf:bus>
+
+    <bean id="userMapper" class="com.utraveler.mapper.mysql.UserMapper"/>
+    <bean id="userSettingMapper" class="com.utraveler.mapper.mysql.UserSettingMapper"/>
+    <bean id="eventMapper" class="com.utraveler.mapper.mysql.EventMapper"/>
+    <bean id="photoMapper" class="com.utraveler.mapper.mysql.PhotoMapper"/>
+    <bean id="moneySpendingMapper" class="com.utraveler.mapper.mysql.MoneySpendingMapper"/>
+    <bean id="messageMapper" class="com.utraveler.mapper.mysql.MessageMapper"/>
+    <bean id="routeMapper" class="com.utraveler.mapper.mysql.RouteMapper"/>
+    <bean id="tripPlanMapper" class="com.utraveler.mapper.mysql.TripPlanMapper"/>
+
+    <!-- Web Services -->
+    <bean id="userService" class="com.utraveler.ws.service.impl.UserWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="userSettingDao" ref="userSettingDao"/>
+        <property name="userSettingMapper" ref="userSettingMapper"/>
+        <property name="authenticationService" ref="userDetails"/>
+    </bean>
+
+    <bean id="eventService" class="com.utraveler.ws.service.impl.EventWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="eventDao" ref="eventDao"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="moneySpendingDao" ref="moneySpendingDao"/>
+        <property name="photoDao" ref="photoDao"/>
+        <property name="routeDao" ref="routeDao"/>
+        <property name="messageDao" ref="messageDao"/>
+        <property name="authenticationService" ref="userDetails"/>
+        <property name="eventMapper" ref="eventMapper"/>
+    </bean>
+
+    <bean id="photoService" class="com.utraveler.ws.service.impl.PhotoWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="photoDao" ref="photoDao"/>
+        <property name="eventDao" ref="eventDao"/>
+        <property name="authenticationService" ref="userDetails"/>
+        <property name="photoMapper" ref="photoMapper"/>
+    </bean>
+
+    <bean id="moneySpendingService" class="com.utraveler.ws.service.impl.MoneySpendingWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="moneySpendingDao" ref="moneySpendingDao"/>
+        <property name="eventDao" ref="eventDao"/>
+        <property name="authenticationService" ref="userDetails"/>
+        <property name="moneySpendingMapper" ref="moneySpendingMapper"/>
+    </bean>
+
+    <bean id="routeService" class="com.utraveler.ws.service.impl.RouteWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="routeDao" ref="routeDao"/>
+        <property name="eventDao" ref="eventDao"/>
+        <property name="authenticationService" ref="userDetails"/>
+        <property name="routeMapper" ref="routeMapper"/>
+    </bean>
+
+    <bean id="messageService" class="com.utraveler.ws.service.impl.MessageWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="messageDao" ref="messageDao"/>
+        <property name="eventDao" ref="eventDao"/>
+        <property name="authenticationService" ref="userDetails"/>
+        <property name="messageMapper" ref="messageMapper"/>
+    </bean>
+
+    <bean id="tripPlanService" class="com.utraveler.ws.service.impl.TripPlanWebServiceImpl">
+        <property name = "validationService" ref="validationService" />
+        <property name = "authenticationService" ref="userDetails" />
+        <property name = "eventDao" ref="eventDao" />
+        <property name = "tripPlanDao" ref="tripPlanDao" />
+        <property name = "tripPlanMapper" ref="tripPlanMapper" />
+    </bean>
+
+    <bean id="appInfoService" class="com.utraveler.ws.service.impl.AppInfoWebServiceImpl">
+        <property name="validationService" ref="validationService"/>
+        <property name="appInfoDao" ref="appInfoDao"/>
+    </bean>
+
+    <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+
+    <jaxrs:server id="rest-ws" address="/">
+        <jaxrs:serviceBeans>
+            <ref bean="routeService"/>
+            <ref bean="eventService"/>
+            <ref bean="photoService"/>
+            <ref bean="moneySpendingService"/>
+            <ref bean="userService"/>
+            <ref bean="messageService"/>
+            <ref bean="appInfoService"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <ref bean='jsonProvider'/>
+        </jaxrs:providers>
+    </jaxrs:server>
+
+</beans>

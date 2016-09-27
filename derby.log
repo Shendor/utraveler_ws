@@ -1,0 +1,30 @@
+----------------------------------------------------------------
+2014-03-20 15:42:25.285 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-0144-e028-5b6a-0000086697b0
+on database directory C:\Java Projects\utraveler-ws\repository\version\db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2014-03-20 15:42:26.023 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 888c4022-0144-e028-5b6a-0000086697b0
+on database directory C:\Java Projects\utraveler-ws\repository\workspaces\default\db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2014-03-20 15:42:26.950 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance e1734037-0144-e028-5b6a-0000086697b0
+on database directory C:\Java Projects\utraveler-ws\repository\workspaces\security\db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2014-03-20 15:42:27.337 GMT:
+Shutting down instance 888c4022-0144-e028-5b6a-0000086697b0
+----------------------------------------------------------------
+
+2014-03-20 15:42:27.367 GMT:
+Shutting down instance e1734037-0144-e028-5b6a-0000086697b0
+----------------------------------------------------------------
+
+2014-03-20 15:42:27.392 GMT:
+Shutting down instance a816c00e-0144-e028-5b6a-0000086697b0
+----------------------------------------------------------------

@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/properties/db.properties"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <context:component-scan base-package="com.utraveler.dao.mysql"/>
+    <context:annotation-config/>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${hibernate.driver}"/>
+        <property name="url" value="${hibernate.url}"/>
+        <property name="username" value="${hibernate.username}"/>
+        <property name="password" value="${hibernate.password}"/>
+    </bean>-->
+
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${hibernate.driver}"/>
+        <property name="jdbcUrl" value="${hibernate.remote.url}"/>
+        <property name="username" value="${hibernate.remote.username}"/>
+        <property name="password" value="${hibernate.remote.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="300"/>
+        <property name="idleMaxAgeInSeconds" value="120"/>
+        <property name="maxConnectionsPerPartition" value="${hibernate.max_pool_size}"/>
+        <property name="minConnectionsPerPartition" value="${hibernate.min_pool_size}"/>
+        <property name="partitionCount" value="2"/>
+        <property name="acquireIncrement" value="3"/>
+        <property name="statementsCacheSize" value="50"/>
+        <property name="releaseHelperThreads" value="3"/>
+    </bean>
+
+    <bean id="localSessionFactoryBean" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.utraveler.dao.mysql"/>
+        <property name="configLocation" value="classpath:configuration/hibernate.cfg.xml"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="localSessionFactoryBean"/>
+    </bean>
+</beans>

@@ -1,0 +1,4 @@
+syntax: glob
+utraveler-ws-launcher/target/**
+utraveler-validator/target/**
+utraveler-mapper/traget/**

@@ -1,0 +1,23 @@
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id = "validationService" class = "com.utraveler.validator.ValidationServiceImpl">
+        <property name = "validators">
+            <list>
+                <bean class = "com.utraveler.validator.EventValidator" />
+                <bean class = "com.utraveler.validator.MoneySpendingValidator" />
+                <bean class = "com.utraveler.validator.PushpinValidator" />
+                <bean class = "com.utraveler.validator.RouteValidator" />
+                <bean class = "com.utraveler.validator.UserValidator" />
+                <bean class = "com.utraveler.validator.UserSettingsValidator" />
+                <bean class = "com.utraveler.validator.MessageValidator" />
+                <bean class = "com.utraveler.validator.PhotoValidator" />
+                <bean class = "com.utraveler.validator.TripPlanValidator" />
+                <bean class = "com.utraveler.validator.BaseUserValidator" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

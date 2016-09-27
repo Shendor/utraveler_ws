@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!--Test config-->
+        <!--<property name="connection.pool_size">10</property>-->
+       <!--    <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+           <property name="connection.url">${hibernate.url}</property>
+           <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+           <property name="connection.username">${hibernate.username}</property>
+           <property name="connection.password">${hibernate.password}</property>
+           <property name="show_sql">true</property>
+           <property name="hbm2ddl.auto">validate</property>
+           <property name="hibernate.jdbc.batch_size">500</property>-->
+
+
+        <!--   <property name="bonecp.idleMaxAge">240</property>
+           <property name="bonecp.idleConnectionTestPeriod">60</property>
+           <property name="bonecp.partitionCount">3</property>
+           <property name="bonecp.acquireIncrement">10</property>
+           <property name="bonecp.maxConnectionsPerPartition">60</property>
+           <property name="bonecp.minConnectionsPerPartition">20</property>
+           <property name="bonecp.statementsCacheSize">50</property>
+           <property name="bonecp.releaseHelperThreads">3</property>-->
+
+        <!--Production config-->
+        <!--<property name="connection.pool_size">10</property>-->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.url">${hibernate.remote.url}</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">${hibernate.remote.username}</property>
+        <property name="connection.password">${hibernate.remote.password}</property>
+        <property name="show_sql">false</property>
+        <property name="hbm2ddl.auto">validate</property>
+        <property name="hibernate.jdbc.batch_size">200</property>
+
+        <property name="jadira.usertype.autoRegisterUserTypes">true</property>
+        <property name="jadira.usertype.databaseZone">UTC</property>
+        <property name="jadira.usertype.javaZone">UTC</property>
+    </session-factory>
+</hibernate-configuration>

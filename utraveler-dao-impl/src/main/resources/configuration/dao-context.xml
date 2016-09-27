@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/properties/db.properties"/>
+    </bean>
+
+    <bean id="mongoClient" class="com.mongodb.MongoClient">
+        <constructor-arg value="${db.host}"/>
+        <constructor-arg value="${db.port}"/>
+    </bean>
+
+    <bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+        <constructor-arg index="0" ref="mongoClient"/>
+        <constructor-arg index="1" value="${db.name}"/>
+    </bean>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg ref="mongoDbFactory"/>
+    </bean>
+
+    <bean id="hiLoKeyGenerator" class="com.utraveler.dao.impl.HiLoKeyGeneratorImpl">
+        <constructor-arg ref="mongoTemplate"/>
+    </bean>
+
+    <bean id="userDao" class="com.utraveler.dao.impl.UserDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="eventDao" class="com.utraveler.dao.impl.EventDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="photoDao" class="com.utraveler.dao.impl.PhotoDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="photoPushpinDao" class="com.utraveler.dao.impl.PhotoPushpinDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="moneySpendingDao" class="com.utraveler.dao.impl.MoneySpendingDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="routeDao" class="com.utraveler.dao.impl.RouteDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+
+    <bean id="messageDao" class="com.utraveler.dao.impl.MessageDaoImpl">
+        <constructor-arg ref="mongoTemplate"/>
+        <property name="keyGenerator" ref="hiLoKeyGenerator"/>
+    </bean>
+</beans>
